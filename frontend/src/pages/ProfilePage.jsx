@@ -23,25 +23,25 @@ function Profile() {
 
   return (
     <div className="max-w-2xl mx-auto">
-      <h1 className="text-2xl font-bold mb-2">{user?.nickname}</h1>
-      <p className="text-gray-500 mb-6">{user?.email}</p>
+      <h1 className="text-xl sm:text-2xl font-bold mb-1">{user?.nickname}</h1>
+      <p className="text-gray-500 mb-4 sm:mb-6 text-sm">{user?.email}</p>
 
-      <div className="flex gap-4 mb-6">
+      <div className="flex gap-3 mb-6">
         <Link to="/messages"
           className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm">Messages</Link>
         <Link to="/create"
           className="border border-blue-600 text-blue-600 px-4 py-2 rounded-lg text-sm">+ New Listing</Link>
       </div>
 
-      <h2 className="text-lg font-semibold mb-3">My Listings</h2>
+      <h2 className="text-base sm:text-lg font-semibold mb-3">My Listings</h2>
       {listings.length === 0 ? (
-        <div className="text-center py-10 text-gray-400">No listings yet</div>
+        <div className="text-center py-10 text-gray-400 text-sm">No listings yet</div>
       ) : (
         <div className="space-y-3">
           {listings.map(l => (
-            <div key={l.id} className="bg-white border rounded-xl p-4 flex items-center gap-4">
-              <div className="flex-1">
-                <Link to={`/listings/${l.id}`} className="font-medium hover:text-blue-600">
+            <div key={l.id} className="bg-white border rounded-xl p-3 sm:p-4 flex items-center gap-3 sm:gap-4 min-w-0">
+              <div className="flex-1 min-w-0">
+                <Link to={`/listings/${l.id}`} className="font-medium hover:text-blue-600 text-sm truncate block">
                   {l.textbook_title}
                 </Link>
                 <div className="text-sm text-gray-500">
@@ -54,7 +54,7 @@ function Profile() {
               </div>
               {l.status === 'active' && (
                 <button onClick={() => markSold(l.id)}
-                  className="text-sm text-gray-500 hover:text-green-600 border rounded-lg px-3 py-1">
+                  className="text-xs sm:text-sm text-gray-500 hover:text-green-600 border rounded-lg px-2 sm:px-3 py-1 shrink-0">
                   Mark Sold
                 </button>
               )}
