@@ -6,13 +6,21 @@ export const AuthContext = createContext(null);
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem('token'));
+  const [loading, setLoading] = useState(!!localStorage.getItem('token'));
 
   useEffect(() => {
     if (token) {
-      client.get('/auth/me').then(res => setUser(res.data)).catch(() => {
-        localStorage.removeItem('token');
-        setToken(null);
-      });
+      setLoading(true);
+      client.get('/auth/me')
+        .then(res => setUser(res.data))
+        .catch(() => {
+          if (user) return; // already have user from login, keep it
+          localStorage.removeItem('token');
+          setToken(null);
+        })
+        .finally(() => setLoading(false));
+    } else {
+      setLoading(false);
     }
   }, [token]);
 
@@ -39,7 +47,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, login, register, logout, isAuthenticated: !!token }}>
+    <AuthContext.Provider value={{ user, token, loading, login, register, logout, isAuthenticated: !!token }}>
       {children}
     </AuthContext.Provider>
   );
