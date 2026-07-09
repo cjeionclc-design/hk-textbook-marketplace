@@ -5,9 +5,29 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from app.config import settings
-from app.database import engine, Base
+from app.database import engine, Base, SessionLocal
 from app.models import User, Category, Textbook, Listing, Message
 from app.routers import auth, categories, textbooks, listings, messages
+
+SEED_CATEGORIES = [
+    ("chinese", "中文"),
+    ("english", "英文"),
+    ("math", "数学"),
+    ("ls", "通识教育"),
+    ("physics", "物理"),
+    ("chemistry", "化学"),
+    ("biology", "生物"),
+    ("economics", "经济"),
+    ("bafs", "企会财"),
+    ("ict", "资讯科技"),
+    ("history", "历史"),
+    ("geography", "地理"),
+    ("chinese_history", "中国历史"),
+    ("chinese_literature", "中国文学"),
+    ("music", "音乐"),
+    ("visual_arts", "视觉艺术"),
+    ("pe", "体育"),
+]
 
 
 def create_app() -> FastAPI:
@@ -33,6 +53,12 @@ def create_app() -> FastAPI:
     @app.on_event("startup")
     def on_startup():
         Base.metadata.create_all(bind=engine)
+        db = SessionLocal()
+        if db.query(Category).count() == 0:
+            for name, name_zh in SEED_CATEGORIES:
+                db.add(Category(name=name, name_zh=name_zh))
+            db.commit()
+        db.close()
 
     @app.get("/api/health")
     def health():
