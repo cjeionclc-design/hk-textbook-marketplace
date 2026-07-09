@@ -2,7 +2,7 @@ from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
-    database_url: str = "sqlite:///./dev.db"
+    database_url: str = "postgresql://postgres.ueavldxndnzftbymwntn:HKbooks%21%402025@aws-0-ap-east-1.pooler.supabase.com:5432/postgres?sslmode=require"
     secret_key: str = "dev-secret-change-in-production"
     algorithm: str = "HS256"
     access_token_expire_minutes: int = 60 * 24 * 7
