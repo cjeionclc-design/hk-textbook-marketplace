@@ -1,0 +1,8 @@
+__pycache__/
+*.py[cod]
+.env
+dev.db
+uploads/
+node_modules/
+dist/
+.vite/
