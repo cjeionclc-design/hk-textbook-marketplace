@@ -14,12 +14,12 @@ export function ToastProvider({ children }) {
   return (
     <ToastContext.Provider value={show}>
       {children}
-      <div className="fixed bottom-4 right-4 z-[100] flex flex-col gap-2">
+      <div className="fixed bottom-6 right-4 z-[100] flex flex-col gap-2">
         {toasts.map(t => (
           <div key={t.id}
-            className={`px-4 py-3 rounded-xl shadow-lg text-sm font-medium animate-[slideIn_0.3s_ease-out] ${
-              t.type === 'success' ? 'bg-emerald-600 text-white' :
-              t.type === 'error' ? 'bg-red-500 text-white' :
+            className={`px-5 py-3 rounded-2xl shadow-xl text-sm font-bold animate-[slideIn_0.3s_ease-out] ${
+              t.type === 'success' ? 'bg-gradient-to-r from-emerald-400 to-teal-400 text-white shadow-emerald-200' :
+              t.type === 'error' ? 'bg-gradient-to-r from-red-400 to-pink-400 text-white shadow-red-200' :
               'bg-gray-800 text-white'
             }`}>
             {t.message}

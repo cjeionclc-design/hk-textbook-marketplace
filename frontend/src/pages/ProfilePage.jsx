@@ -23,51 +23,49 @@ function Profile() {
 
   return (
     <div className="max-w-2xl mx-auto">
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 sm:p-6 mb-6">
+      <div className="bg-white rounded-3xl border border-gray-50 shadow-sm p-5 sm:p-6 mb-6">
         <div className="flex items-center gap-4">
-          <div className="w-14 h-14 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-xl font-bold shrink-0">
+          <div className="w-14 h-14 rounded-full bg-gradient-to-br from-orange-400 to-pink-400 text-white flex items-center justify-center text-xl font-bold shrink-0 shadow-md shadow-orange-200">
             {user?.nickname?.[0]?.toUpperCase()}
           </div>
           <div className="min-w-0">
-            <h1 className="text-xl font-bold text-gray-900 truncate">{user?.nickname}</h1>
-            <p className="text-sm text-gray-400 truncate">{user?.email}</p>
+            <h1 className="text-xl font-extrabold text-gray-900 truncate">{user?.nickname}</h1>
+            <p className="text-sm text-gray-400 truncate font-medium">{user?.email}</p>
           </div>
         </div>
         <div className="flex gap-3 mt-5">
           <Link to="/messages"
-            className="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-xl text-sm font-medium transition-colors shadow-sm">消息</Link>
+            className="bg-gradient-to-r from-orange-400 to-pink-400 text-white px-5 py-2 rounded-2xl text-sm font-bold transition-all shadow-md shadow-orange-200 hover:scale-105 active:scale-95">💬 消息</Link>
           <Link to="/create"
-            className="border-2 border-indigo-200 text-indigo-600 px-5 py-2 rounded-xl text-sm font-medium hover:bg-indigo-50 transition-colors">+ 发布书籍</Link>
+            className="border-2 border-orange-200 text-orange-500 px-5 py-2 rounded-2xl text-sm font-bold hover:bg-orange-50 transition-colors active:scale-95">+ 发布书籍</Link>
         </div>
       </div>
 
-      <h2 className="text-base font-bold text-gray-800 mb-3">我的上架</h2>
+      <h2 className="text-base font-extrabold text-gray-800 mb-3">📦 我的上架</h2>
       {listings.length === 0 ? (
-        <div className="text-center py-16 bg-white rounded-2xl border border-gray-100">
-          <div className="text-4xl mb-3">📦</div>
-          <p className="text-gray-400 text-sm font-medium">还没有发布任何书籍</p>
-          <Link to="/create" className="text-indigo-600 text-sm font-medium mt-1 inline-block">发布第一本 →</Link>
+        <div className="text-center py-16 bg-white rounded-3xl border border-gray-50 shadow-sm">
+          <div className="text-5xl mb-3">📦</div>
+          <p className="text-gray-400 font-bold">还没有发布任何书籍</p>
+          <Link to="/create" className="inline-block mt-3 text-orange-500 font-bold text-sm hover:text-orange-600">发布第一本 →</Link>
         </div>
       ) : (
         <div className="space-y-3">
           {listings.map(l => (
-            <div key={l.id} className="bg-white rounded-2xl border border-gray-100 p-4 flex items-center gap-4 min-w-0 hover:shadow-sm transition-shadow">
+            <div key={l.id} className="bg-white rounded-2xl border border-gray-50 p-4 flex items-center gap-4 min-w-0 hover:shadow-sm hover:border-orange-100 transition-all">
               <div className="flex-1 min-w-0">
-                <Link to={`/listings/${l.id}`} className="font-semibold text-gray-800 hover:text-indigo-600 text-sm truncate block transition-colors">
-                  {l.textbook_title}
-                </Link>
+                <Link to={`/listings/${l.id}`} className="font-bold text-gray-800 hover:text-orange-500 text-sm truncate block transition-colors">{l.textbook_title}</Link>
                 <div className="flex items-center gap-3 mt-1">
-                  <span className="text-sm font-bold text-red-500">HK${l.price}</span>
+                  <span className="text-sm font-extrabold text-pink-500">HK${l.price}</span>
                   {l.status === 'active' ? (
-                    <span className="text-xs font-medium text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">售卖中</span>
+                    <span className="text-xs font-bold text-emerald-500 bg-emerald-50 px-2 py-0.5 rounded-full">🟢 售卖中</span>
                   ) : (
-                    <span className="text-xs font-medium text-gray-400 bg-gray-50 px-2 py-0.5 rounded-full">已售出</span>
+                    <span className="text-xs font-bold text-gray-400 bg-gray-50 px-2 py-0.5 rounded-full">⚪ 已售出</span>
                   )}
                 </div>
               </div>
               {l.status === 'active' && (
                 <button onClick={() => markSold(l.id)}
-                  className="text-xs font-medium text-gray-400 hover:text-emerald-600 border border-gray-200 rounded-lg px-3 py-1.5 shrink-0 hover:border-emerald-200 transition-all">
+                  className="text-xs font-bold text-gray-400 hover:text-emerald-500 border border-gray-200 rounded-xl px-3 py-1.5 shrink-0 hover:border-emerald-200 transition-all active:scale-95">
                   标记已售
                 </button>
               )}

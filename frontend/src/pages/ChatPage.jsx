@@ -25,7 +25,7 @@ function Chat() {
       setMessages(res.data);
       if (res.data.length > 0) {
         const last = res.data[res.data.length - 1];
-        setPartner(last.sender_id === user.id ? last.sender_nickname : last.sender_nickname);
+        setPartner(last.sender_nickname);
       }
     });
   };
@@ -54,31 +54,31 @@ function Chat() {
 
   return (
     <div className="max-w-2xl mx-auto">
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden h-[75vh] sm:h-[78vh] flex flex-col">
-        <div className="border-b border-gray-100 px-4 py-3 flex items-center gap-3 shrink-0">
-          <Link to="/messages" className="text-gray-400 hover:text-gray-600">←</Link>
-          <div className="w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-xs font-bold">
+      <div className="bg-white rounded-3xl border border-gray-50 shadow-sm overflow-hidden h-[75vh] sm:h-[78vh] flex flex-col">
+        <div className="border-b border-gray-50 px-4 py-3 flex items-center gap-3 shrink-0 bg-white">
+          <Link to="/messages" className="text-gray-400 hover:text-orange-400 text-lg font-bold">←</Link>
+          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-400 to-pink-400 text-white flex items-center justify-center text-xs font-bold shadow-sm">
             {partner?.[0]?.toUpperCase() || '?'}
           </div>
-          <span className="font-semibold text-gray-800 text-sm">{partner || 'Loading...'}</span>
+          <span className="font-bold text-gray-800 text-sm">{partner || '加载中...'}</span>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50/50">
+        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gradient-to-b from-orange-50/30 to-white">
           {messages.length === 0 && (
             <div className="text-center py-20">
-              <div className="text-4xl mb-3">💬</div>
-              <p className="text-gray-400 text-sm">发送第一条消息开始对话</p>
+              <div className="text-5xl mb-4">💬</div>
+              <p className="text-gray-400 font-bold">发送第一条消息开始对话</p>
             </div>
           )}
           {messages.map(m => (
             <div key={m.id} className={`flex ${m.sender_id === user.id ? 'justify-end' : 'justify-start'}`}>
               <div className={`max-w-[85%] sm:max-w-[70%] rounded-2xl px-4 py-2.5 break-words ${
                 m.sender_id === user.id
-                  ? 'bg-indigo-600 text-white rounded-br-md'
+                  ? 'bg-gradient-to-r from-orange-400 to-pink-400 text-white rounded-br-md shadow-md shadow-orange-200'
                   : 'bg-white border border-gray-100 shadow-sm rounded-bl-md'
               }`}>
-                <p className="text-sm whitespace-pre-wrap leading-relaxed">{m.content}</p>
-                <div className={`text-[10px] mt-1.5 ${m.sender_id === user.id ? 'text-indigo-200' : 'text-gray-400'}`}>
+                <p className="text-sm whitespace-pre-wrap leading-relaxed font-medium">{m.content}</p>
+                <div className={`text-[10px] mt-1.5 font-medium ${m.sender_id === user.id ? 'text-orange-100' : 'text-gray-400'}`}>
                   {new Date(m.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </div>
               </div>
@@ -87,12 +87,12 @@ function Chat() {
           <div ref={bottomRef} />
         </div>
 
-        <form onSubmit={send} className="border-t border-gray-100 p-3 flex gap-2 bg-white shrink-0">
+        <form onSubmit={send} className="border-t border-gray-50 p-3 flex gap-2 bg-white shrink-0">
           <input type="text" value={content} onChange={e => setContent(e.target.value)}
             placeholder="输入消息..."
-            className="flex-1 border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:border-indigo-300 focus:outline-none transition-all min-w-0 bg-gray-50" />
+            className="flex-1 border border-gray-100 rounded-2xl px-4 py-2.5 text-sm focus:border-orange-300 focus:outline-none transition-all min-w-0 bg-gray-50 font-medium" />
           <button type="submit"
-            className="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-xl text-sm font-medium transition-colors shrink-0 disabled:opacity-50"
+            className="bg-gradient-to-r from-orange-400 to-pink-400 hover:from-orange-500 hover:to-pink-500 text-white px-5 py-2.5 rounded-2xl text-sm font-bold transition-all shrink-0 disabled:opacity-40 active:scale-95"
             disabled={!content.trim()}>
             发送
           </button>

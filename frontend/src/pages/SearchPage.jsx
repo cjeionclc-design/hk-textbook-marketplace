@@ -16,9 +16,7 @@ export default function SearchPage() {
   const [loading, setLoading] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
 
-  useEffect(() => {
-    client.get('/categories').then(res => setCategories(res.data));
-  }, []);
+  useEffect(() => { client.get('/categories').then(res => setCategories(res.data)); }, []);
 
   useEffect(() => {
     const q = searchParams.get('q') || '';
@@ -38,7 +36,6 @@ export default function SearchPage() {
     if (filters.condition) params.condition = filters.condition;
     if (filters.min_price) params.min_price = filters.min_price;
     if (filters.max_price) params.max_price = filters.max_price;
-
     client.get('/listings', { params }).then(res => {
       setListings(res.data.items);
       setTotal(res.data.total);
@@ -57,26 +54,26 @@ export default function SearchPage() {
       <main className="flex-1 min-w-0">
         <div className="flex items-center justify-between mb-4 gap-2">
           <div className="min-w-0">
-            <h2 className="text-base sm:text-lg font-bold text-gray-800 truncate">
-              {filters.search ? `"${filters.search}"` : '全部教科书'}
+            <h2 className="text-base sm:text-lg font-extrabold text-gray-800 truncate">
+              {filters.search ? `🔍 "${filters.search}"` : '📚 全部教科书'}
             </h2>
-            {!loading && <p className="text-xs text-gray-400 mt-0.5">{total} 个结果</p>}
+            {!loading && <p className="text-xs text-gray-400 mt-0.5 font-medium">{total} 个结果</p>}
           </div>
           <button onClick={() => setShowFilter(true)}
-            className="md:hidden text-sm font-medium text-indigo-600 border border-indigo-200 rounded-xl px-4 py-2 shrink-0 hover:bg-indigo-50 transition-colors">
-            筛选
+            className="md:hidden text-sm font-bold text-orange-500 border-2 border-orange-200 rounded-2xl px-4 py-2 shrink-0 hover:bg-orange-50 transition-colors active:scale-95">
+            🔍 筛选
           </button>
         </div>
 
         {loading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4">
-            {[1, 2, 3, 4, 5, 6].map(i => <CardSkeleton key={i} />)}
+            {[1,2,3,4,5,6].map(i => <CardSkeleton key={i} />)}
           </div>
         ) : listings.length === 0 ? (
-          <div className="text-center py-20 bg-white rounded-2xl border border-gray-100">
-            <div className="text-5xl mb-4">🔍</div>
-            <p className="text-gray-400 font-medium">没有找到相关书籍</p>
-            <p className="text-gray-300 text-sm mt-1">试试其他搜索词或筛选条件</p>
+          <div className="text-center py-20 bg-white rounded-3xl border border-gray-50 shadow-sm">
+            <div className="text-6xl mb-4">🔍</div>
+            <p className="text-gray-400 font-bold">没有找到相关书籍</p>
+            <p className="text-gray-300 text-sm mt-1 font-medium">试试其他搜索词或筛选条件</p>
           </div>
         ) : (
           <>
@@ -87,10 +84,10 @@ export default function SearchPage() {
               <div className="flex justify-center gap-1.5 mt-8 flex-wrap">
                 {Array.from({ length: totalPages }, (_, i) => (
                   <button key={i + 1} onClick={() => setPage(i + 1)}
-                    className={`min-w-[36px] h-9 rounded-lg text-sm font-medium transition-all ${
+                    className={`min-w-[40px] h-10 rounded-xl text-sm font-bold transition-all active:scale-95 ${
                       page === i + 1
-                        ? 'bg-indigo-600 text-white shadow-md shadow-indigo-200'
-                        : 'bg-white border border-gray-200 text-gray-500 hover:border-indigo-200'
+                        ? 'bg-gradient-to-r from-orange-400 to-pink-400 text-white shadow-lg shadow-orange-200'
+                        : 'bg-white border border-gray-100 text-gray-400 hover:border-orange-200'
                     }`}>
                     {i + 1}
                   </button>
@@ -103,10 +100,10 @@ export default function SearchPage() {
 
       {showFilter && (
         <div className="fixed inset-0 z-50 md:hidden">
-          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setShowFilter(false)} />
-          <div className="absolute right-0 top-0 h-full w-80 max-w-[85vw] bg-white shadow-2xl p-6 overflow-y-auto">
+          <div className="absolute inset-0 bg-black/30 backdrop-blur-sm" onClick={() => setShowFilter(false)} />
+          <div className="absolute right-0 top-0 h-full w-80 max-w-[85vw] bg-white shadow-2xl p-6 overflow-y-auto rounded-l-3xl">
             <div className="flex justify-between items-center mb-5">
-              <span className="font-bold text-gray-800">筛选</span>
+              <span className="font-extrabold text-gray-800">🔍 筛选</span>
               <button onClick={() => setShowFilter(false)} className="text-gray-400 hover:text-gray-600 text-lg">✕</button>
             </div>
             <FilterSidebar filters={filters} onChange={(f) => { setFilters(f); setShowFilter(false); }} categories={categories} />
