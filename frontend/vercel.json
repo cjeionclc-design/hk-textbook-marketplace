@@ -2,11 +2,11 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://hk-textbook-api.onrender.com/api/:path*"
+      "destination": "https://hk-textbook-marketplace.onrender.com/api/:path*"
     },
     {
       "source": "/uploads/:path*",
-      "destination": "https://hk-textbook-api.onrender.com/uploads/:path*"
+      "destination": "https://hk-textbook-marketplace.onrender.com/uploads/:path*"
     }
   ]
 }
