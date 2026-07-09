@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: hk-textbook-api
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: hk-textbook-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: CORS_ORIGINS
+        value: https://hk-textbook.vercel.app
+
+databases:
+  - name: hk-textbook-db
+    plan: free
