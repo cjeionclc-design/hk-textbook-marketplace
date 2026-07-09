@@ -3,9 +3,9 @@ import Navbar from './Navbar';
 
 export default function Layout() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       <Navbar />
-      <main className="max-w-6xl mx-auto px-3 sm:px-4 py-4 sm:py-6">
+      <main className="max-w-6xl mx-auto px-3 sm:px-4 py-5 sm:py-8">
         <Outlet />
       </main>
     </div>

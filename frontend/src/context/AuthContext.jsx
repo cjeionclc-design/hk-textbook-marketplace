@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect, useCallback } from 'react';
 import client from '../api/client';
 
 export const AuthContext = createContext(null);
@@ -8,21 +8,31 @@ export function AuthProvider({ children }) {
   const [token, setToken] = useState(localStorage.getItem('token'));
   const [loading, setLoading] = useState(!!localStorage.getItem('token'));
 
-  useEffect(() => {
-    if (token) {
-      setLoading(true);
-      client.get('/auth/me')
-        .then(res => setUser(res.data))
-        .catch(() => {
-          if (user) return; // already have user from login, keep it
+  const refreshUser = useCallback(() => {
+    const t = localStorage.getItem('token');
+    if (!t) {
+      setLoading(false);
+      return;
+    }
+    client.get('/auth/me')
+      .then(res => setUser(res.data))
+      .catch(err => {
+        if (err.response?.status === 401) {
           localStorage.removeItem('token');
           setToken(null);
-        })
-        .finally(() => setLoading(false));
+        }
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
+  useEffect(() => {
+    if (token) {
+      refreshUser();
     } else {
+      setUser(null);
       setLoading(false);
     }
-  }, [token]);
+  }, [token, refreshUser]);
 
   const login = async (email, password) => {
     const res = await client.post('/auth/login', { email, password });
