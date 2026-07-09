@@ -2,7 +2,7 @@ import os
 import uuid
 from fastapi import UploadFile
 
-from app.config import settings
+from app.config import UPLOAD_DIR
 
 ALLOWED_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp"}
 
@@ -13,8 +13,8 @@ def save_upload(file: UploadFile) -> str:
         ext = ".jpg"
 
     filename = f"{uuid.uuid4().hex}{ext}"
-    os.makedirs(settings.upload_dir, exist_ok=True)
-    filepath = os.path.join(settings.upload_dir, filename)
+    os.makedirs(UPLOAD_DIR, exist_ok=True)
+    filepath = os.path.join(UPLOAD_DIR, filename)
 
     with open(filepath, "wb") as f:
         f.write(file.file.read())

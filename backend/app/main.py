@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
-from app.config import settings
+from app.config import CORS_ORIGINS, UPLOAD_DIR, SECRET_KEY
 from app.database import engine, Base, SessionLocal
 from app.models import User, Category, Textbook, Listing, Message
 from app.routers import auth, categories, textbooks, listings, messages
@@ -35,7 +35,7 @@ def create_app() -> FastAPI:
 
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=[settings.cors_origins],
+        allow_origins=[CORS_ORIGINS],
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
@@ -47,8 +47,8 @@ def create_app() -> FastAPI:
     app.include_router(listings.router)
     app.include_router(messages.router)
 
-    os.makedirs(settings.upload_dir, exist_ok=True)
-    app.mount("/uploads", StaticFiles(directory=settings.upload_dir), name="uploads")
+    os.makedirs(UPLOAD_DIR, exist_ok=True)
+    app.mount("/uploads", StaticFiles(directory=UPLOAD_DIR), name="uploads")
 
     @app.on_event("startup")
     def on_startup():
@@ -66,7 +66,7 @@ def create_app() -> FastAPI:
 
     @app.get("/api/debug-key")
     def debug_key():
-        return {"key_preview": settings.secret_key[:8] + "...", "cors": settings.cors_origins}
+        return {"key_preview": SECRET_KEY[:8] + "...", "cors": CORS_ORIGINS}
 
     return app
 
