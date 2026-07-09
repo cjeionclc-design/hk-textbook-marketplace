@@ -64,6 +64,10 @@ def create_app() -> FastAPI:
     def health():
         return {"status": "ok"}
 
+    @app.get("/api/debug-key")
+    def debug_key():
+        return {"key_preview": settings.secret_key[:8] + "...", "cors": settings.cors_origins}
+
     return app
 
 
