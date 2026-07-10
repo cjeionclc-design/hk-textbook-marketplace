@@ -1,6 +1,6 @@
 import os
 
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres.swpymdcftcxmzynpgqrd:HKbooks%21%402025@aws-0-ap-east-1.pooler.supabase.com:5432/postgres?sslmode=require")
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./dev.db")
 SECRET_KEY = "hk-textbook-jwt-secret-2026"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7
