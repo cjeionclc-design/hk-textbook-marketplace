@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
-from app.config import CORS_ORIGINS, UPLOAD_DIR, SECRET_KEY
+from app.config import CORS_ORIGINS, UPLOAD_DIR
 from app.database import engine, Base, SessionLocal
 from app.models import User, Category, Textbook, Listing, Message
 from app.routers import auth, categories, textbooks, listings, messages
@@ -63,10 +63,6 @@ def create_app() -> FastAPI:
     @app.get("/api/health")
     def health():
         return {"status": "ok"}
-
-    @app.get("/api/debug-key")
-    def debug_key():
-        return {"key_preview": SECRET_KEY[:8] + "...", "cors": CORS_ORIGINS}
 
     return app
 
