@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import client from '../api/client';
+import { useToast } from '../components/Toast';
 import useAuth from '../hooks/useAuth';
 import ProtectedRoute from '../components/ProtectedRoute';
 
@@ -10,15 +11,25 @@ export default function ProfilePage() {
 
 function Profile() {
   const { user } = useAuth();
+  const toast = useToast();
   const [listings, setListings] = useState([]);
 
   useEffect(() => {
     client.get('/listings/mine').then(res => setListings(res.data));
   }, []);
 
-  const markSold = async (id) => {
-    await client.patch(`/listings/${id}/status?status=sold`);
-    setListings(prev => prev.map(l => l.id === id ? { ...l, status: 'sold' } : l));
+  const toggleStatus = async (l) => {
+    const newStatus = l.status === 'active' ? 'sold' : 'active';
+    await client.patch(`/listings/${l.id}/status?status=${newStatus}`);
+    setListings(prev => prev.map(x => x.id === l.id ? { ...x, status: newStatus } : x));
+    toast(newStatus === 'sold' ? '已标记售出' : '已重新上架', 'success');
+  };
+
+  const deleteListing = async (id) => {
+    if (!confirm('确定要删除这个上架吗？')) return;
+    await client.delete(`/listings/${id}`);
+    setListings(prev => prev.filter(l => l.id !== id));
+    toast('已删除');
   };
 
   return (
@@ -51,7 +62,7 @@ function Profile() {
       ) : (
         <div className="space-y-3">
           {listings.map(l => (
-            <div key={l.id} className="bg-white rounded-2xl border border-gray-50 p-4 flex items-center gap-4 min-w-0 hover:shadow-sm hover:border-orange-100 transition-all">
+            <div key={l.id} className="bg-white rounded-2xl border border-gray-50 p-4 flex items-center gap-3 min-w-0 hover:shadow-sm hover:border-orange-100 transition-all">
               <div className="flex-1 min-w-0">
                 <Link to={`/listings/${l.id}`} className="font-bold text-gray-800 hover:text-orange-500 text-sm truncate block transition-colors">{l.textbook_title}</Link>
                 <div className="flex items-center gap-3 mt-1">
@@ -63,12 +74,18 @@ function Profile() {
                   )}
                 </div>
               </div>
-              {l.status === 'active' && (
-                <button onClick={() => markSold(l.id)}
-                  className="text-xs font-bold text-gray-400 hover:text-emerald-500 border border-gray-200 rounded-xl px-3 py-1.5 shrink-0 hover:border-emerald-200 transition-all active:scale-95">
-                  标记已售
-                </button>
-              )}
+              <button onClick={() => toggleStatus(l)}
+                className={`text-xs font-bold rounded-xl px-2.5 py-1.5 shrink-0 transition-all active:scale-95 border ${
+                  l.status === 'active'
+                    ? 'text-emerald-500 border-emerald-200 hover:bg-emerald-50'
+                    : 'text-amber-500 border-amber-200 hover:bg-amber-50'
+                }`}>
+                {l.status === 'active' ? '✓ 已售出' : '↻ 重新上架'}
+              </button>
+              <button onClick={() => deleteListing(l.id)}
+                className="text-xs font-bold text-gray-300 hover:text-red-400 border border-gray-150 rounded-xl px-2 py-1.5 shrink-0 transition-all active:scale-95 hover:border-red-200">
+                🗑
+              </button>
             </div>
           ))}
         </div>

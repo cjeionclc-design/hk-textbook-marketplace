@@ -141,3 +141,19 @@ def update_status(
     listing.status = status
     db.commit()
     return {"status": "ok"}
+
+
+@router.delete("/{listing_id}")
+def delete_listing(
+    listing_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    listing = db.query(Listing).filter(Listing.id == listing_id).first()
+    if not listing:
+        raise HTTPException(404, "Listing not found")
+    if listing.seller_id != current_user.id:
+        raise HTTPException(403, "Not your listing")
+    db.delete(listing)
+    db.commit()
+    return {"status": "ok"}
