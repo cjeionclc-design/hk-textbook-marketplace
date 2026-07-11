@@ -31,6 +31,7 @@ export default function Navbar() {
           {isAuthenticated ? (
             <>
               <Link to="/create" className="bg-gradient-to-r from-orange-400 to-pink-400 hover:from-orange-500 hover:to-pink-500 text-white px-4 py-1.5 rounded-full transition-all shadow-md shadow-orange-200 scale-100 hover:scale-105 active:scale-95">+ 卖书</Link>
+              <Link to="/wanted" className="text-gray-500 hover:text-purple-500 transition-colors">📢 求购</Link>
               <Link to="/messages" className="text-gray-500 hover:text-orange-500 transition-colors">💬 消息</Link>
               <Link to="/profile" className="text-gray-700 hover:text-pink-500 transition-colors truncate max-w-[100px]">{user?.nickname}</Link>
               <button onClick={handleLogout} className="text-gray-300 hover:text-red-400 transition-colors">登出</button>

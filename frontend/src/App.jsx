@@ -11,6 +11,7 @@ import CreateListingPage from './pages/CreateListing';
 import MessagesPage from './pages/MessagesPage';
 import ChatPage from './pages/ChatPage';
 import ProfilePage from './pages/ProfilePage';
+import WantedPage from './pages/WantedPage';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
               <Route path="/messages" element={<MessagesPage />} />
               <Route path="/chat/:partnerId" element={<ChatPage />} />
               <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/wanted" element={<WantedPage />} />
             </Route>
           </Routes>
         </BrowserRouter>

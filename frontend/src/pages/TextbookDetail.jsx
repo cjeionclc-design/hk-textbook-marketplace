@@ -4,13 +4,27 @@ import client from '../api/client';
 import ConditionStars from '../components/ConditionStars';
 import PriceComparison from '../components/PriceComparison';
 import { DetailSkeleton } from '../components/Skeleton';
+import { useToast } from '../components/Toast';
 import useAuth from '../hooks/useAuth';
 
 export default function TextbookDetail() {
   const { listingId } = useParams();
   const { isAuthenticated, user } = useAuth();
+  const toast = useToast();
   const [listing, setListing] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showReport, setShowReport] = useState(false);
+  const [reportReason, setReportReason] = useState('');
+  const [reportDesc, setReportDesc] = useState('');
+
+  const submitReport = async (e) => {
+    e.preventDefault();
+    await client.post('/reports', { listing_id: listing.id, reason: reportReason, description: reportDesc });
+    toast('已提交举报', 'success');
+    setShowReport(false);
+    setReportReason('');
+    setReportDesc('');
+  };
 
   useEffect(() => {
     client.get(`/listings/${listingId}`).then(res => setListing(res.data)).finally(() => setLoading(false));
@@ -93,8 +107,37 @@ export default function TextbookDetail() {
             <span className="text-sm text-gray-400 bg-gray-50 px-4 py-2 rounded-full font-bold shrink-0">你的上架 👑</span>
           )}
         </div>
+        {isAuthenticated && !isOwner && (
+          <button onClick={() => setShowReport(true)}
+            className="mt-3 text-xs text-gray-300 hover:text-red-400 transition-colors">⚑ 举报</button>
+        )}
       </div>
       </div>
+
+      {showReport && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/30 backdrop-blur-sm" onClick={() => setShowReport(false)} />
+          <form onSubmit={submitReport} className="relative bg-white rounded-3xl p-6 max-w-sm w-full shadow-2xl">
+            <h3 className="text-lg font-extrabold mb-1">举报内容</h3>
+            <select value={reportReason} required onChange={e => setReportReason(e.target.value)}
+              className="w-full border border-gray-100 rounded-xl px-3 py-2.5 text-sm mt-3">
+              <option value="">选择原因</option>
+              <option value="fake">虚假信息</option>
+              <option value="spam">垃圾广告</option>
+              <option value="inappropriate">不当内容</option>
+              <option value="scam">诈骗</option>
+              <option value="other">其他</option>
+            </select>
+            <textarea value={reportDesc} onChange={e => setReportDesc(e.target.value)}
+              placeholder="补充说明..."
+              className="w-full border border-gray-100 rounded-xl px-3 py-2 text-sm my-3" rows={2} />
+            <button type="submit"
+              className="w-full bg-red-400 text-white py-2.5 rounded-xl font-bold text-sm active:scale-95">
+              提交举报
+            </button>
+          </form>
+        </div>
+      )}
     </div>
   );
 }

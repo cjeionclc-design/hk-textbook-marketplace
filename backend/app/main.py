@@ -8,8 +8,8 @@ from sqlalchemy import text
 
 from app.config import CORS_ORIGINS, UPLOAD_DIR
 from app.database import engine, Base, SessionLocal
-from app.models import User, Category, Textbook, Listing, Message
-from app.routers import auth, categories, textbooks, listings, messages
+from app.models import User, Category, Textbook, Listing, Message, Transaction, Review, Wanted, Report
+from app.routers import auth, categories, textbooks, listings, messages, transactions, reviews, wanted, reports
 
 SEED_CATEGORIES = [
     ("chinese", "中文"),
@@ -48,6 +48,10 @@ def create_app() -> FastAPI:
     app.include_router(textbooks.router)
     app.include_router(listings.router)
     app.include_router(messages.router)
+    app.include_router(transactions.router)
+    app.include_router(reviews.router)
+    app.include_router(wanted.router)
+    app.include_router(reports.router)
 
     os.makedirs(UPLOAD_DIR, exist_ok=True)
     app.mount("/uploads", StaticFiles(directory=UPLOAD_DIR), name="uploads")
