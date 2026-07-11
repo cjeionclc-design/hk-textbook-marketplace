@@ -33,13 +33,13 @@ export default function FilterSidebar({ filters, onChange, categories }) {
       </div>
       <div>
         <label className="text-[11px] font-bold text-gray-400 uppercase tracking-wide">价格</label>
-        <div className="flex gap-2 mt-1.5">
-          <input type="number" placeholder="最低" value={filters.min_price || ''}
+        <div className="flex flex-col gap-2 mt-1.5">
+          <input type="number" placeholder="最低价" value={filters.min_price || ''}
             onChange={e => onChange({...filters, min_price: e.target.value || null})}
-            className="glass-input flex-1 !py-2 !text-sm" />
-          <input type="number" placeholder="最高" value={filters.max_price || ''}
+            className="glass-input !py-2 !text-sm" />
+          <input type="number" placeholder="最高价" value={filters.max_price || ''}
             onChange={e => onChange({...filters, max_price: e.target.value || null})}
-            className="glass-input flex-1 !py-2 !text-sm" />
+            className="glass-input !py-2 !text-sm" />
         </div>
       </div>
       {activeCount > 0 && (
