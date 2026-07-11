@@ -17,10 +17,10 @@ export function ToastProvider({ children }) {
       <div className="fixed bottom-6 right-4 z-[100] flex flex-col gap-2">
         {toasts.map(t => (
           <div key={t.id}
-            className={`px-5 py-3 rounded-2xl shadow-xl text-sm font-bold animate-[slideIn_0.3s_ease-out] ${
-              t.type === 'success' ? 'bg-gradient-to-r from-emerald-400 to-teal-400 text-white shadow-emerald-200' :
-              t.type === 'error' ? 'bg-gradient-to-r from-red-400 to-pink-400 text-white shadow-red-200' :
-              'bg-gray-800 text-white'
+            className={`neo-card px-5 py-3 shadow-[4px_4px_8px_#e0dbd6,-4px_-4px_8px_#ffffff] text-sm font-bold ${
+              t.type === 'success' ? 'text-orange-600' :
+              t.type === 'error' ? 'text-red-500' :
+              'text-gray-600'
             }`}>
             {t.message}
           </div>

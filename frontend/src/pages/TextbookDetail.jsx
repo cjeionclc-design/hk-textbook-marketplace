@@ -43,24 +43,24 @@ export default function TextbookDetail() {
 
   return (
     <div className="max-w-3xl mx-auto">
-      <Link to="/search" className="inline-flex items-center gap-1 text-sm text-gray-400 hover:text-orange-500 mb-6 transition-colors font-bold">← 返回搜索</Link>
+      <Link to="/search" className="inline-flex items-center gap-1 text-sm text-gray-400 hover:text-orange-500 mb-6 font-bold">← 返回搜索</Link>
 
-      <div className="bg-white rounded-3xl border border-gray-50 shadow-sm overflow-hidden min-w-0">
+      <div className="neo-card overflow-hidden">
         {listing.cover_image && (
-          <div className="aspect-[16/9] bg-gray-50">
+          <div className="aspect-[16/9] bg-[#e8e3db]">
             <img src={listing.cover_image} alt="" className="w-full h-full object-cover" />
           </div>
         )}
         <div className="p-5 sm:p-8">
         <div className="flex flex-wrap items-center gap-2 mb-3">
-          <span className="text-xs font-bold text-white bg-gradient-to-r from-orange-400 to-pink-400 px-3 py-1 rounded-full">{listing.textbook_category_name_zh}</span>
+          <span className="text-xs font-bold text-white px-3 py-1 rounded-full" style={{background:'#ff7b3d'}}>{listing.textbook_category_name_zh}</span>
           <span className="text-xs text-gray-400 font-bold">{listing.textbook_language === 'zh' ? '📘 中文版' : '📙 English'}</span>
         </div>
 
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-2 break-words tracking-tight">{listing.textbook_title}</h1>
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-800 mb-2 break-words">{listing.textbook_title}</h1>
 
         {(listing.textbook_publisher || listing.textbook_isbn) && (
-          <div className="flex flex-wrap gap-x-4 gap-y-1 mb-5 text-xs text-gray-400 font-medium">
+          <div className="flex flex-wrap gap-x-4 gap-y-1 mb-5 text-xs text-gray-400 font-bold">
             {listing.textbook_publisher && <span>🏢 {listing.textbook_publisher}</span>}
             {listing.textbook_isbn && <span>📋 {listing.textbook_isbn}</span>}
           </div>
@@ -74,7 +74,7 @@ export default function TextbookDetail() {
         </div>
 
         {listing.notes && (
-          <div className="mt-5 p-4 bg-amber-50 rounded-2xl border border-amber-100">
+          <div className="mt-5 p-4 neo-inset">
             <p className="text-sm text-gray-600 whitespace-pre-wrap break-words font-medium">💬 {listing.notes}</p>
           </div>
         )}
@@ -82,14 +82,14 @@ export default function TextbookDetail() {
         {photos.length > 0 && (
           <div className="mt-5 flex gap-3 overflow-x-auto pb-2">
             {photos.map((p, i) => (
-              <img key={i} src={p} alt="" className="w-40 h-40 object-cover rounded-2xl border border-gray-100 shrink-0" />
+              <img key={i} src={p} alt="" className="w-40 h-40 object-cover rounded-2xl shrink-0 neo-raised" />
             ))}
           </div>
         )}
 
-        <div className="mt-8 flex items-center justify-between pt-5 border-t border-gray-50 gap-3">
+        <div className="mt-8 flex items-center justify-between pt-5 border-t border-[#e8e3db] gap-3">
           <div className="flex items-center gap-3 min-w-0">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-pink-400 text-white flex items-center justify-center text-sm font-bold shrink-0 shadow-md shadow-orange-200">
+            <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white" style={{background:'#ff7b3d'}}>
               {listing.seller_nickname?.[0]?.toUpperCase()}
             </div>
             <div className="min-w-0">
@@ -99,28 +99,28 @@ export default function TextbookDetail() {
           </div>
           {isAuthenticated && !isOwner && (
             <Link to={`/chat/${listing.seller_id}?listing=${listing.id}`}
-              className="bg-gradient-to-r from-orange-400 to-pink-400 hover:from-orange-500 hover:to-pink-500 text-white px-6 py-2.5 rounded-full font-bold text-sm shadow-lg shadow-orange-200 transition-all hover:scale-105 active:scale-95 shrink-0">
+              className="neo-btn-primary px-6 py-2.5 text-sm shrink-0 flex items-center gap-1">
               💬 联系卖家
             </Link>
           )}
           {isOwner && (
-            <span className="text-sm text-gray-400 bg-gray-50 px-4 py-2 rounded-full font-bold shrink-0">你的上架 👑</span>
+            <span className="text-sm text-gray-400 neo-btn px-4 py-2 font-bold shrink-0">你的上架 👑</span>
           )}
         </div>
         {isAuthenticated && !isOwner && (
           <button onClick={() => setShowReport(true)}
-            className="mt-3 text-xs text-gray-300 hover:text-red-400 transition-colors">⚑ 举报</button>
+            className="mt-3 text-xs text-gray-300 hover:text-red-400 transition-colors font-bold">⚑ 举报</button>
         )}
       </div>
       </div>
 
       {showReport && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-black/30 backdrop-blur-sm" onClick={() => setShowReport(false)} />
-          <form onSubmit={submitReport} className="relative bg-white rounded-3xl p-6 max-w-sm w-full shadow-2xl">
-            <h3 className="text-lg font-extrabold mb-1">举报内容</h3>
+          <div className="absolute inset-0 bg-black/20 backdrop-blur-sm" onClick={() => setShowReport(false)} />
+          <form onSubmit={submitReport} className="relative neo-card p-6 max-w-sm w-full">
+            <h3 className="text-lg font-extrabold text-gray-800 mb-1">举报内容</h3>
             <select value={reportReason} required onChange={e => setReportReason(e.target.value)}
-              className="w-full border border-gray-100 rounded-xl px-3 py-2.5 text-sm mt-3">
+              className="w-full neo-inset px-3 py-2.5 text-sm mt-3 font-bold text-gray-600">
               <option value="">选择原因</option>
               <option value="fake">虚假信息</option>
               <option value="spam">垃圾广告</option>
@@ -130,9 +130,9 @@ export default function TextbookDetail() {
             </select>
             <textarea value={reportDesc} onChange={e => setReportDesc(e.target.value)}
               placeholder="补充说明..."
-              className="w-full border border-gray-100 rounded-xl px-3 py-2 text-sm my-3" rows={2} />
+              className="w-full neo-inset px-3 py-2 text-sm my-3" rows={2} />
             <button type="submit"
-              className="w-full bg-red-400 text-white py-2.5 rounded-xl font-bold text-sm active:scale-95">
+              className="w-full text-white py-2.5 rounded-2xl font-bold text-sm active:scale-95" style={{background:'#ff7b3d'}}>
               提交举报
             </button>
           </form>

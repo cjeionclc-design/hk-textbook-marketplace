@@ -3,7 +3,7 @@ import Navbar from './Navbar';
 
 export default function Layout() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50/50 via-white to-pink-50/30">
+    <div className="min-h-screen" style={{background:'#f5f0eb'}}>
       <Navbar />
       <main className="max-w-6xl mx-auto px-3 sm:px-4 py-4 sm:py-6">
         <Outlet />
