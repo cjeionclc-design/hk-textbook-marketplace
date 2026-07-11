@@ -10,8 +10,8 @@ const CATEGORY_ICONS = {
 const ICON_CLASS = "w-5 h-5";
 
 export function CategoryIcon({ name, className = ICON_CLASS }) {
-  const Component = CATEGORY_ICONS[name] || BookOpen;
-  return <Component className={className} strokeWidth={1.5} style={{flexShrink:0}} />;
+  const Icon = CATEGORY_ICONS[name] || BookOpen;
+  return <Icon className={className} strokeWidth={1.8} size={24} />;
 }
 
 export function SearchIcon({ className = ICON_CLASS }) { return <Search className={className} strokeWidth={1.5} />; }
