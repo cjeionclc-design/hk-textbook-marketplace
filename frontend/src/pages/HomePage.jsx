@@ -27,61 +27,67 @@ export default function HomePage() {
 
   return (
     <div>
-      <div className="py-10 sm:py-16 text-center">
-        <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-3">
+      <div className="py-8 sm:py-16 text-center">
+        <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight mb-2">
           <span className="bg-gradient-to-r from-red-400 to-orange-500 bg-clip-text text-transparent">二手教科书</span>
-          <span className="text-gray-800"> 买卖平台</span>
+          <span className="text-gray-800 hidden sm:inline"> 买卖平台</span>
         </h1>
-        <p className="text-gray-500 text-sm sm:text-base font-medium mb-8">原价对比 · 新旧评分 · 同校面交</p>
+        <p className="text-gray-500 text-xs sm:text-base font-medium mb-5 sm:mb-8">原价对比 · 新旧评分 · 同校面交</p>
         <SearchBar />
       </div>
 
-      <section className="mb-10">
-        <h2 className="text-lg font-bold text-gray-800 mb-4">科目分类</h2>
-        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-9 gap-2.5">
+      <section className="mb-6 sm:mb-10">
+        <div className="flex items-center justify-between mb-3 sm:mb-4">
+          <h2 className="text-base sm:text-lg font-bold text-gray-800">科目分类</h2>
+          <Link to="/search" className="btn btn-ghost btn-sm">全部 →</Link>
+        </div>
+        <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-9 gap-1.5 sm:gap-2.5">
           {categories.map((cat, i) => (
             <Link key={cat.id} to={`/search?category=${cat.id}`}
-              className="glass flex flex-col items-center p-3 py-4 gap-2 group !rounded-2xl">
-              <div className="w-9 h-9 rounded-xl flex items-center justify-center transition-transform group-hover:scale-110 duration-200"
+              className="glass flex flex-col items-center p-2 sm:p-3 sm:py-4 gap-1.5 sm:gap-2 group !rounded-xl sm:!rounded-2xl">
+              <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl flex items-center justify-center transition-transform group-active:scale-95 duration-150"
                 style={{background:`${COLORS[i%COLORS.length]}18`, color:COLORS[i%COLORS.length]}}>
-                <CategoryIcon name={cat.name} className="w-5 h-5" />
+                <CategoryIcon name={cat.name} className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
-              <span className="text-[11px] sm:text-xs text-gray-600 text-center font-semibold">{cat.name_zh}</span>
+              <span className="text-[10px] sm:text-xs text-gray-500 text-center font-semibold leading-tight">{cat.name_zh}</span>
             </Link>
           ))}
         </div>
       </section>
 
       {recentListings.length > 0 && (
-        <section className="mb-10">
-          <div className="flex items-center gap-2 mb-4">
-            <div className="w-1 h-5 rounded-full" style={{background:'#ff6b6b'}} />
-            <h2 className="text-lg font-bold text-gray-800">最近浏览</h2>
+        <section className="mb-6 sm:mb-10">
+          <div className="flex items-center gap-2 mb-3 sm:mb-4">
+            <div className="w-1 h-4 sm:h-5 rounded-full" style={{background:'#ff6b6b'}} />
+            <h2 className="text-base sm:text-lg font-bold text-gray-800">最近浏览</h2>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
             {recentListings.slice(0,3).map(l => <TextbookCard key={l.id} listing={l} />)}
           </div>
         </section>
       )}
 
       <section>
-        <div className="flex items-center gap-2 mb-4">
-          <div className="w-1 h-5 rounded-full" style={{background:'#4ecdc4'}} />
-          <h2 className="text-lg font-bold text-gray-800">最新上架</h2>
+        <div className="flex items-center justify-between mb-3 sm:mb-4">
+          <div className="flex items-center gap-2">
+            <div className="w-1 h-4 sm:h-5 rounded-full" style={{background:'#4ecdc4'}} />
+            <h2 className="text-base sm:text-lg font-bold text-gray-800">最新上架</h2>
+          </div>
+          <Link to="/search" className="btn btn-ghost btn-sm">更多 →</Link>
         </div>
         {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
             {[1,2,3].map(i => <CardSkeleton key={i} />)}
           </div>
         ) : listings.length === 0 ? (
-          <div className="text-center py-20 glass">
-            <ShopIcon className="w-16 h-16 mx-auto text-gray-200 mb-4" />
-            <p className="text-gray-400 font-semibold text-lg mb-1">还没有人发布书籍</p>
-            <p className="text-gray-300 text-sm mb-4">成为第一个卖家吧</p>
+          <div className="text-center py-16 sm:py-20 glass">
+            <ShopIcon className="w-12 h-12 sm:w-16 sm:h-16 mx-auto text-gray-200 mb-3 sm:mb-4" />
+            <p className="text-gray-400 font-semibold text-base sm:text-lg mb-1">还没有人发布书籍</p>
+            <p className="text-gray-300 text-xs sm:text-sm mb-4">成为第一个卖家吧</p>
             <Link to="/create" className="btn btn-primary">立即发布</Link>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
             {listings.map(l => <TextbookCard key={l.id} listing={l} />)}
           </div>
         )}

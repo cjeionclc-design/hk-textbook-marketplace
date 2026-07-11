@@ -19,30 +19,30 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="max-w-sm mx-auto mt-10 sm:mt-16">
-      <div className="text-center mb-8">
-        <div className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4" style={{background:'linear-gradient(135deg,#ff6b6b,#ee5a24)'}}>
-          <ShopIcon className="w-7 h-7 text-white" />
+    <div className="max-w-sm mx-auto mt-6 sm:mt-16 px-1">
+      <div className="text-center mb-6 sm:mb-8">
+        <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center mx-auto mb-3 sm:mb-4" style={{background:'linear-gradient(135deg,#ff6b6b,#ee5a24)'}}>
+          <ShopIcon className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
         </div>
-        <h1 className="text-2xl font-extrabold text-gray-800">欢迎回来</h1>
-        <p className="text-gray-400 mt-1.5 text-sm font-medium">登录 HKTextbook</p>
+        <h1 className="text-xl sm:text-2xl font-extrabold text-gray-800">欢迎回来</h1>
+        <p className="text-gray-400 mt-1 text-xs sm:text-sm font-medium">登录 HKTextbook</p>
       </div>
-      <div className="glass p-6 !rounded-2xl">
-        {error && <div className="bg-red-50 text-red-500 p-3 rounded-xl mb-4 text-sm font-semibold">{error}</div>}
-        <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="glass p-5 sm:p-6 !rounded-2xl">
+        {error && <div className="bg-red-50 text-red-500 p-3 rounded-xl mb-4 text-xs sm:text-sm font-semibold">{error}</div>}
+        <form onSubmit={handleSubmit} className="space-y-3.5 sm:space-y-4">
           <div>
-            <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1.5">邮箱</label>
+            <label className="block text-[11px] sm:text-xs font-bold text-gray-500 uppercase tracking-wide mb-1 sm:mb-1.5">邮箱</label>
             <input type="email" placeholder="your@email.com" value={email} onChange={e => setEmail(e.target.value)}
               className="glass-input w-full" required />
           </div>
           <div>
-            <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1.5">密码</label>
+            <label className="block text-[11px] sm:text-xs font-bold text-gray-500 uppercase tracking-wide mb-1 sm:mb-1.5">密码</label>
             <input type="password" placeholder="······" value={password} onChange={e => setPassword(e.target.value)}
               className="glass-input w-full" required />
           </div>
-          <button type="submit" className="btn btn-primary w-full justify-center py-3 text-base">登录</button>
+          <button type="submit" className="btn btn-primary w-full py-2.5 sm:py-3 text-sm sm:text-base">登录</button>
         </form>
-        <p className="mt-5 text-center text-gray-400 text-sm font-medium">
+        <p className="mt-4 sm:mt-5 text-center text-gray-400 text-xs sm:text-sm font-medium">
           还没有账户？ <Link to="/register" className="font-bold" style={{color:'#ff6b6b'}}>立即注册</Link>
         </p>
       </div>
