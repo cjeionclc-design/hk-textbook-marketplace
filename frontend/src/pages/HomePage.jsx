@@ -4,20 +4,23 @@ import client from '../api/client';
 import SearchBar from '../components/SearchBar';
 import TextbookCard from '../components/TextbookCard';
 import { CardSkeleton } from '../components/Skeleton';
-import { CategoryIcon, ShopIcon, RefreshIcon } from '../components/Icon';
-
-const COLORS = ['#ff6b6b','#a78bfa','#4ecdc4','#f97316','#6bcb77','#06b6d4','#8b5cf6','#f59e0b'];
+import { ShopIcon, RefreshIcon } from '../components/Icon';
 
 export default function HomePage() {
-  const [categories, setCategories] = useState([]);
   const [listings, setListings] = useState([]);
+  const [hotListings, setHotListings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [recentIds] = useState(() => { try { return JSON.parse(localStorage.getItem('recent')||'[]'); } catch { return []; } });
   const [recentListings, setRecentListings] = useState([]);
 
   useEffect(() => {
-    Promise.all([client.get('/categories'), client.get('/listings?page_size=12')])
-      .then(([c,l]) => { setCategories(c.data); setListings(l.data.items); }).finally(() => setLoading(false));
+    Promise.all([
+      client.get('/listings?page_size=12'),
+      client.get('/listings?page_size=4&page=1'),
+    ]).then(([l, hot]) => {
+      setListings(l.data.items);
+      setHotListings(hot.data.items);
+    }).finally(() => setLoading(false));
     if (recentIds.length > 0) {
       client.get('/listings', { params: { page_size: 12 } }).then(res => {
         setRecentListings(res.data.items.filter(l => recentIds.includes(l.id)));
@@ -36,39 +39,25 @@ export default function HomePage() {
         <SearchBar />
       </div>
 
-      <section className="mb-6 sm:mb-10">
-        <div className="flex items-center justify-between mb-3 sm:mb-4">
-          <h2 className="text-base sm:text-lg font-bold text-gray-800">科目分类</h2>
-          <Link to="/search" className="btn btn-ghost btn-sm">全部 →</Link>
-        </div>
-        <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-4">
-          {categories.slice(0, 8).map((cat, i) => (
-            <Link key={cat.id} to={`/search?category=${cat.id}`}
-              className="btn glass !rounded-full !py-1.5 !px-3 sm:!py-2 sm:!px-4 !text-xs sm:!text-sm font-semibold text-gray-600 hover:text-gray-800 active:scale-95 flex items-center gap-1.5"
-              style={{borderColor:`${COLORS[i%COLORS.length]}30`}}>
-              <span style={{color:COLORS[i%COLORS.length]}}><CategoryIcon name={cat.name} className="w-3.5 h-3.5 sm:w-4 sm:h-4" /></span>
-              {cat.name_zh}
-            </Link>
-          ))}
-        </div>
-        <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-9 gap-1.5 sm:gap-2.5">
-          {categories.map((cat, i) => (
-            <Link key={cat.id} to={`/search?category=${cat.id}`}
-              className="glass flex flex-col items-center p-2 sm:p-3 sm:py-4 gap-1.5 sm:gap-2 group !rounded-xl sm:!rounded-2xl">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center transition-transform group-active:scale-95 duration-150"
-                style={{background:`${COLORS[i%COLORS.length]}20`, color:COLORS[i%COLORS.length]}}>
-                <CategoryIcon name={cat.name} className="w-5 h-5 sm:w-6 sm:h-6" />
-              </div>
-              <span className="text-[10px] sm:text-xs text-gray-500 text-center font-semibold leading-tight">{cat.name_zh}</span>
-            </Link>
-          ))}
-        </div>
-      </section>
+      {hotListings.length > 0 && (
+        <section className="mb-6 sm:mb-10">
+          <div className="flex items-center gap-2 mb-3 sm:mb-4">
+            <div className="w-1 h-4 sm:h-5 rounded-full" style={{background:'#ff6b6b'}} />
+            <h2 className="text-base sm:text-lg font-bold text-gray-800">热门交易</h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+            {hotListings.map(l => <TextbookCard key={l.id} listing={l} />)}
+          </div>
+          <div className="text-center mt-3">
+            <Link to="/search" className="btn btn-ghost btn-sm">查看更多 →</Link>
+          </div>
+        </section>
+      )}
 
       {recentListings.length > 0 && (
         <section className="mb-6 sm:mb-10">
           <div className="flex items-center gap-2 mb-3 sm:mb-4">
-            <div className="w-1 h-4 sm:h-5 rounded-full" style={{background:'#ff6b6b'}} />
+            <div className="w-1 h-4 sm:h-5 rounded-full" style={{background:'#a78bfa'}} />
             <h2 className="text-base sm:text-lg font-bold text-gray-800">最近浏览</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
