@@ -12,6 +12,7 @@ import MessagesPage from './pages/MessagesPage';
 import ChatPage from './pages/ChatPage';
 import ProfilePage from './pages/ProfilePage';
 import WantedPage from './pages/WantedPage';
+import FavoritesPage from './pages/FavoritesPage';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
               <Route path="/chat/:partnerId" element={<ChatPage />} />
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/wanted" element={<WantedPage />} />
+              <Route path="/favorites" element={<FavoritesPage />} />
             </Route>
           </Routes>
         </BrowserRouter>

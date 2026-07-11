@@ -22,6 +22,13 @@ function Chat() {
     const params = {};
     if (listingId) params.listing_id = listingId;
     client.get(`/messages/${partnerId}`, { params }).then(res => {
+      const prev = messages.length;
+      if (res.data.length > prev && prev > 0) {
+        const newMsg = res.data[res.data.length - 1];
+        if (newMsg.sender_id !== user.id && document.hidden && Notification.permission === 'granted') {
+          new Notification(`新消息: ${newMsg.sender_nickname}`, { body: newMsg.content, icon: '/favicon.ico' });
+        }
+      }
       setMessages(res.data);
       if (res.data.length > 0) {
         const last = res.data[res.data.length - 1];
@@ -31,6 +38,7 @@ function Chat() {
   };
 
   useEffect(() => {
+    if (Notification.permission === 'default') Notification.requestPermission();
     loadMessages();
     const interval = setInterval(loadMessages, 3000);
     return () => clearInterval(interval);

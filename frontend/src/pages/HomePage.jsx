@@ -4,12 +4,16 @@ import client from '../api/client';
 import SearchBar from '../components/SearchBar';
 import TextbookCard from '../components/TextbookCard';
 import { CardSkeleton } from '../components/Skeleton';
-import { CategoryIcon, ShopIcon } from '../components/Icon';
+import { CategoryIcon, ShopIcon, RefreshIcon } from '../components/Icon';
 
 export default function HomePage() {
   const [categories, setCategories] = useState([]);
   const [listings, setListings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [recentIds, setRecentIds] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('recent') || '[]'); } catch { return []; }
+  });
+  const [recentListings, setRecentListings] = useState([]);
 
   useEffect(() => {
     Promise.all([
@@ -19,6 +23,11 @@ export default function HomePage() {
       setCategories(catRes.data);
       setListings(listRes.data.items);
     }).finally(() => setLoading(false));
+    if (recentIds.length > 0) {
+      client.get('/listings', { params: { page_size: 5 } }).then(res => {
+        setRecentListings(res.data.items.filter(l => recentIds.includes(l.id)));
+      }).catch(() => {});
+    }
   }, []);
 
   return (
@@ -51,6 +60,17 @@ export default function HomePage() {
           ))}
         </div>
       </section>
+
+      {recentListings.length > 0 && (
+        <section className="mb-8">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-base sm:text-lg font-extrabold text-gray-700 flex items-center gap-1.5"><RefreshIcon className="w-5 h-5" style={{color:'#ff7b3d'}} /> 最近浏览</h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {recentListings.slice(0, 3).map(l => <TextbookCard key={l.id} listing={l} />)}
+          </div>
+        </section>
+      )}
 
       <section>
         <div className="flex items-center justify-between mb-3">

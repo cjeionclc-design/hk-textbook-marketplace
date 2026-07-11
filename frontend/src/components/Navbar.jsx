@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import { useToast } from './Toast';
-import { PlusIcon, MegaphoneIcon, MessageIcon, UserIcon, LoginIcon, MenuIcon, CloseIcon } from './Icon';
+import { PlusIcon, MegaphoneIcon, MessageIcon, UserIcon, LoginIcon, MenuIcon, CloseIcon, StarIcon } from './Icon';
 
 export default function Navbar() {
   const { isAuthenticated, user, logout } = useAuth();
@@ -42,6 +42,7 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-3 text-sm font-bold">
             {isAuthenticated ? (
               <>
+                <Link to="/favorites" className="text-gray-400 hover:text-orange-500 transition-colors p-1"><StarIcon /></Link>
                 <Link to="/messages" className="text-gray-400 hover:text-orange-500 transition-colors p-1"><MessageIcon /></Link>
                 <Link to="/profile" className="neo-btn px-3 py-1.5 text-gray-600 shadow-[2px_2px_4px_#e0dbd6,-2px_-2px_4px_#ffffff] truncate max-w-[100px] flex items-center gap-1">
                   <UserIcon className="w-3.5 h-3.5" /> {user?.nickname}

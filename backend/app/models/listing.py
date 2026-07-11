@@ -14,6 +14,7 @@ class Listing(Base):
     condition = Column(Integer, nullable=False)
     cover_image = Column(String(500), default="")
     photos = Column(Text, default="")
+    location = Column(String(200), default="")
     notes = Column(String(1000), default="")
     status = Column(String(20), default="active")
     created_at = Column(DateTime, server_default=func.now())

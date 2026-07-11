@@ -7,5 +7,6 @@ from app.models.transaction import Transaction
 from app.models.review import Review
 from app.models.wanted import Wanted
 from app.models.report import Report
+from app.models.favorite import Favorite
 
-__all__ = ["User", "Category", "Textbook", "Listing", "Message", "Transaction", "Review", "Wanted", "Report"]
+__all__ = ["User", "Category", "Textbook", "Listing", "Message", "Transaction", "Review", "Wanted", "Report", "Favorite"]

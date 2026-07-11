@@ -23,6 +23,7 @@ function CreateListingForm() {
   const [price, setPrice] = useState('');
   const [condition, setCondition] = useState(4);
   const [notes, setNotes] = useState('');
+  const [location, setLocation] = useState('');
   const [coverImage, setCoverImage] = useState(null);
   const [photos, setPhotos] = useState([]);
   const [newTextbook, setNewTextbook] = useState({
@@ -62,6 +63,7 @@ function CreateListingForm() {
     form.append('price', price);
     form.append('condition', String(condition));
     form.append('notes', notes);
+    form.append('location', location);
     if (coverImage) form.append('cover_image', coverImage);
     photos.forEach(p => form.append('photos', p));
     try {
@@ -162,6 +164,13 @@ function CreateListingForm() {
             <label className="block text-sm font-bold text-gray-600 mb-1.5">💰 售价 (HKD)</label>
             <input type="number" step="0.01" required value={price} onChange={e => setPrice(e.target.value)}
               placeholder="e.g. 80" className="w-full neo-inset px-4 py-3 text-lg font-bold" />
+          </div>
+
+          <div>
+            <label className="block text-sm font-bold text-gray-600 mb-1.5">📍 面交地点</label>
+            <input type="text" value={location} onChange={e => setLocation(e.target.value)}
+              placeholder="e.g. 九龙塘站 / 港大"
+              className="w-full neo-inset px-4 py-3 text-sm font-bold" />
           </div>
 
           <div>

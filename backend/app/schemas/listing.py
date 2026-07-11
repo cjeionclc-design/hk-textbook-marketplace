@@ -18,6 +18,7 @@ class ListingOut(BaseModel):
     condition: int
     cover_image: str = ""
     photos: str = ""
+    location: str = ""
     notes: str
     status: str
     created_at: datetime.datetime
