@@ -41,6 +41,16 @@ export default function HomePage() {
           <h2 className="text-base sm:text-lg font-bold text-gray-800">科目分类</h2>
           <Link to="/search" className="btn btn-ghost btn-sm">全部 →</Link>
         </div>
+        <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-4">
+          {categories.slice(0, 8).map((cat, i) => (
+            <Link key={cat.id} to={`/search?category=${cat.id}`}
+              className="btn glass !rounded-full !py-1.5 !px-3 sm:!py-2 sm:!px-4 !text-xs sm:!text-sm font-semibold text-gray-600 hover:text-gray-800 active:scale-95 flex items-center gap-1.5"
+              style={{borderColor:`${COLORS[i%COLORS.length]}30`}}>
+              <span style={{color:COLORS[i%COLORS.length]}}><CategoryIcon name={cat.name} className="w-3.5 h-3.5 sm:w-4 sm:h-4" /></span>
+              {cat.name_zh}
+            </Link>
+          ))}
+        </div>
         <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-9 gap-1.5 sm:gap-2.5">
           {categories.map((cat, i) => (
             <Link key={cat.id} to={`/search?category=${cat.id}`}
