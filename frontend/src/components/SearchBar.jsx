@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { SearchIcon } from './Icon';
 
 export default function SearchBar() {
   const [query, setQuery] = useState('');
@@ -7,21 +8,18 @@ export default function SearchBar() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (query.trim()) {
-      navigate(`/search?q=${encodeURIComponent(query.trim())}`);
-    }
+    if (query.trim()) navigate(`/search?q=${encodeURIComponent(query.trim())}`);
   };
 
   return (
     <form onSubmit={handleSubmit} className="w-full max-w-xl mx-auto">
       <div className="neo-inset flex items-center">
-        <span className="pl-4 text-lg">🔍</span>
+        <span className="pl-4 text-gray-400"><SearchIcon /></span>
         <input
-          type="text"
-          value={query}
+          type="text" value={query}
           onChange={e => setQuery(e.target.value)}
           placeholder="搜索书名..."
-          className="w-full bg-transparent px-3 py-3.5 text-base font-medium text-gray-700 placeholder-gray-400"
+          className="w-full bg-transparent px-3 py-3.5 text-base font-bold text-gray-700 placeholder-gray-400"
         />
       </div>
     </form>

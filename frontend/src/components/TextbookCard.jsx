@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import ConditionStars from './ConditionStars';
+import { ShopIcon } from './Icon';
 
 export default function TextbookCard({ listing }) {
   const discount = listing.textbook_original_price > 0
@@ -14,14 +15,14 @@ export default function TextbookCard({ listing }) {
           <img src={listing.cover_image} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
         </div>
       ) : (
-        <div className="aspect-[4/3] bg-[#f5f0eb] flex items-center justify-center rounded-t-3xl">
-          <span className="text-5xl opacity-30">📚</span>
+        <div className="aspect-[4/3] bg-[#f5f0eb] flex items-center justify-center">
+          <ShopIcon className="w-12 h-12 text-gray-300" />
         </div>
       )}
       <div className="p-4">
         <div className="flex items-center gap-2 mb-2">
           <span className="text-xs font-bold text-white px-2.5 py-1 rounded-full" style={{background:'#ff7b3d'}}>{listing.textbook_category_name_zh}</span>
-          <span className="text-xs text-gray-400 font-bold">{listing.textbook_language === 'zh' ? '📘 中' : '📙 EN'}</span>
+          <span className="text-xs text-gray-400 font-bold">{listing.textbook_language === 'zh' ? '中文版' : 'English'}</span>
         </div>
         <h3 className="font-bold text-gray-800 mb-2 line-clamp-2 text-sm sm:text-base">{listing.textbook_title}</h3>
         <ConditionStars condition={listing.condition} showLabel />
