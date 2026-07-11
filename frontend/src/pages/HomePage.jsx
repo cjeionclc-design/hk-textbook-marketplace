@@ -45,9 +45,9 @@ export default function HomePage() {
           {categories.map((cat, i) => (
             <Link key={cat.id} to={`/search?category=${cat.id}`}
               className="glass flex flex-col items-center p-2 sm:p-3 sm:py-4 gap-1.5 sm:gap-2 group !rounded-xl sm:!rounded-2xl">
-              <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl flex items-center justify-center transition-transform group-active:scale-95 duration-150"
-                style={{background:`${COLORS[i%COLORS.length]}18`, color:COLORS[i%COLORS.length]}}>
-                <CategoryIcon name={cat.name} className="w-4 h-4 sm:w-5 sm:h-5" />
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center transition-transform group-active:scale-95 duration-150"
+                style={{background:`${COLORS[i%COLORS.length]}20`, color:COLORS[i%COLORS.length]}}>
+                <CategoryIcon name={cat.name} className="w-5 h-5 sm:w-6 sm:h-6" />
               </div>
               <span className="text-[10px] sm:text-xs text-gray-500 text-center font-semibold leading-tight">{cat.name_zh}</span>
             </Link>
