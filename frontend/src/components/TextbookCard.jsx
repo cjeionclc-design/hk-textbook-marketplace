@@ -2,43 +2,44 @@ import { Link } from 'react-router-dom';
 import ConditionStars from './ConditionStars';
 import { ShopIcon } from './Icon';
 
+const ACCENTS = ['#ff6b6b','#a78bfa','#4ecdc4','#f97316','#6bcb77','#8b5cf6'];
+
 export default function TextbookCard({ listing }) {
   const discount = listing.textbook_original_price > 0
-    ? Math.round((1 - listing.price / listing.textbook_original_price) * 100)
-    : 0;
+    ? Math.round((1 - listing.price / listing.textbook_original_price) * 100) : 0;
+  const accent = ACCENTS[listing.id % ACCENTS.length];
 
   return (
     <Link to={`/listings/${listing.id}`}
-      className="group block neo-card overflow-hidden hover:shadow-[12px_12px_24px_#e0dbd6,-12px_-12px_24px_#ffffff] transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.98]">
+      className="card overflow-hidden group flex flex-col">
       {listing.cover_image ? (
-        <div className="aspect-[4/3] bg-[#f0ebe3] overflow-hidden">
+        <div className="aspect-[4/3] bg-gray-50 overflow-hidden">
           <img src={listing.cover_image} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
         </div>
       ) : (
-        <div className="aspect-[4/3] bg-[#f5f0eb] flex items-center justify-center">
-          <ShopIcon className="w-12 h-12 text-gray-300" />
+        <div className="aspect-[4/3] bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
+          <ShopIcon className="w-10 h-10 text-gray-200" />
         </div>
       )}
-      <div className="p-4">
+      <div className="p-4 flex-1 flex flex-col">
         <div className="flex items-center gap-2 mb-2">
-          <span className="text-xs font-bold text-white px-2.5 py-1 rounded-full" style={{background:'#ff7b3d'}}>{listing.textbook_category_name_zh}</span>
-          <span className="text-xs text-gray-400 font-bold">{listing.textbook_language === 'zh' ? '中文版' : 'English'}</span>
+          <span className="tag text-white" style={{background:accent}}>{listing.textbook_category_name_zh}</span>
+          <span className="text-[11px] text-gray-400 font-semibold">{listing.textbook_language === 'zh' ? '中文版' : 'English'}</span>
+          {listing.location && <span className="text-[11px] text-gray-400 ml-auto">📍{listing.location}</span>}
         </div>
-        <h3 className="font-bold text-gray-800 mb-2 line-clamp-2 text-sm sm:text-base">{listing.textbook_title}</h3>
+        <h3 className="font-bold text-gray-800 mb-2 line-clamp-2 text-sm leading-snug flex-1">{listing.textbook_title}</h3>
         <ConditionStars condition={listing.condition} showLabel />
-        <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5 mt-3">
-          <span className="text-xl sm:text-2xl font-extrabold" style={{color:'#ff7b3d'}}>HK${listing.price}</span>
-          <span className="text-xs sm:text-sm text-gray-300 line-through">HK${listing.textbook_original_price}</span>
-          {discount > 0 && (
-            <span className="text-xs font-extrabold text-white px-2 py-0.5 rounded-full shrink-0" style={{background:'#ff7b3d'}}>-{discount}%</span>
-          )}
+        <div className="flex items-baseline gap-2 mt-3">
+          <span className="text-xl font-extrabold" style={{color:accent}}>HK${listing.price}</span>
+          <span className="text-xs text-gray-300 line-through">HK${listing.textbook_original_price}</span>
+          {discount > 0 && <span className="text-[11px] font-bold text-white px-1.5 py-0.5 rounded-md shrink-0" style={{background:accent}}>-{discount}%</span>}
         </div>
-        <div className="flex items-center gap-2 mt-3 pt-3 border-t border-[#e8e3db]">
-          <div className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white" style={{background:'#ff7b3d'}}>
+        <div className="flex items-center gap-2 mt-3 pt-3 border-t border-gray-50">
+          <div className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold text-white" style={{background:accent}}>
             {listing.seller_nickname?.[0]?.toUpperCase()}
           </div>
-          <span className="text-xs text-gray-400 truncate font-bold">{listing.seller_nickname}</span>
-          <span className="text-xs text-gray-300 ml-auto">{new Date(listing.created_at).toLocaleDateString()}</span>
+          <span className="text-xs text-gray-400 font-medium truncate">{listing.seller_nickname}</span>
+          <span className="text-[11px] text-gray-300 ml-auto">{new Date(listing.created_at).toLocaleDateString()}</span>
         </div>
       </div>
     </Link>
