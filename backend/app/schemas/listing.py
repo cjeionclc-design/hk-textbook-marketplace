@@ -16,6 +16,7 @@ class ListingOut(BaseModel):
     seller_id: int
     price: Decimal
     condition: int
+    cover_image: str = ""
     photos: str = ""
     notes: str
     status: str

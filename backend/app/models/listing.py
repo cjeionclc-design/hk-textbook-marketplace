@@ -12,6 +12,7 @@ class Listing(Base):
     seller_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     price = Column(Numeric(10, 2), nullable=False)
     condition = Column(Integer, nullable=False)
+    cover_image = Column(String(500), default="")
     photos = Column(Text, default="")
     notes = Column(String(1000), default="")
     status = Column(String(20), default="active")

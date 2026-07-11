@@ -23,6 +23,7 @@ function CreateListingForm() {
   const [price, setPrice] = useState('');
   const [condition, setCondition] = useState(4);
   const [notes, setNotes] = useState('');
+  const [coverImage, setCoverImage] = useState(null);
   const [photos, setPhotos] = useState([]);
   const [newTextbook, setNewTextbook] = useState({
     title: '', isbn: '', publisher: '', language: 'en', original_price: '', category_id: ''
@@ -74,6 +75,7 @@ function CreateListingForm() {
     form.append('price', price);
     form.append('condition', String(condition));
     form.append('notes', notes);
+    if (coverImage) form.append('cover_image', coverImage);
     photos.forEach(p => form.append('photos', p));
 
     try {
@@ -226,10 +228,30 @@ function CreateListingForm() {
           </div>
 
           <div>
-            <label className="block text-sm font-bold text-gray-700 mb-1.5">📸 照片 <span className="text-gray-400 font-medium">({photos.length}/5)</span></label>
-            <label className="flex items-center justify-center gap-2 border-2 border-dashed border-gray-200 rounded-2xl p-4 cursor-pointer hover:border-orange-300 transition-colors active:scale-[0.99] bg-gray-50/50">
-              <span className="text-2xl">📷</span>
-              <span className="text-sm text-gray-400 font-medium">{photos.length > 0 ? `已选 ${photos.length} 张` : '点击拍照或选择照片'}</span>
+            <label className="block text-sm font-bold text-gray-700 mb-1.5">🖼 封面图片 <span className="text-gray-400 font-medium">（选填）</span></label>
+            {coverImage ? (
+              <div className="relative rounded-2xl overflow-hidden border border-gray-100">
+                <img src={URL.createObjectURL(coverImage)} alt="" className="w-full h-48 object-cover" />
+                <button type="button" onClick={() => setCoverImage(null)}
+                  className="absolute top-2 right-2 w-7 h-7 bg-red-400 text-white rounded-full text-sm flex items-center justify-center shadow-lg">✕</button>
+              </div>
+            ) : (
+              <label className="flex flex-col items-center justify-center gap-1 border-2 border-dashed border-gray-200 rounded-2xl p-6 cursor-pointer hover:border-orange-300 transition-colors active:scale-[0.99] bg-gray-50/50">
+                <span className="text-3xl">📚</span>
+                <span className="text-sm text-gray-400 font-medium">点击上传封面</span>
+                <span className="text-xs text-gray-300">让买家一眼看到你的书</span>
+                <input type="file" accept="image/*" capture="environment"
+                  onChange={e => setCoverImage(e.target.files[0] || null)}
+                  className="hidden" />
+              </label>
+            )}
+          </div>
+
+          <div>
+            <label className="block text-sm font-bold text-gray-700 mb-1.5">📸 更多照片 <span className="text-gray-400 font-medium">({photos.length}/5)</span></label>
+            <label className="flex items-center justify-center gap-2 border-2 border-dashed border-gray-200 rounded-2xl p-3 cursor-pointer hover:border-orange-300 transition-colors active:scale-[0.99] bg-gray-50/50">
+              <span className="text-xl">📷</span>
+              <span className="text-sm text-gray-400 font-medium">{photos.length > 0 ? `已选 ${photos.length} 张` : '点击添加照片'}</span>
               <input type="file" accept="image/*" multiple capture="environment"
                 onChange={e => setPhotos(prev => [...prev, ...Array.from(e.target.files)].slice(0, 5))}
                 className="hidden" />

@@ -74,6 +74,7 @@ async def create_listing(
     price: Decimal = Form(...),
     condition: int = Form(..., ge=1, le=5),
     notes: str = Form(""),
+    cover_image: UploadFile = File(default=None),
     photos: list[UploadFile] = File(default=[]),
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
@@ -81,6 +82,10 @@ async def create_listing(
     textbook = db.query(Textbook).filter(Textbook.id == textbook_id).first()
     if not textbook:
         raise HTTPException(404, "Textbook not found")
+
+    cover_path = ""
+    if cover_image and cover_image.filename:
+        cover_path = save_upload(cover_image)
 
     photo_paths = []
     for p in photos[:5]:
@@ -93,6 +98,7 @@ async def create_listing(
         price=price,
         condition=condition,
         notes=notes,
+        cover_image=cover_path,
         photos=json.dumps(photo_paths),
     )
     db.add(listing)

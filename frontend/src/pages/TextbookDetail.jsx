@@ -31,7 +31,13 @@ export default function TextbookDetail() {
     <div className="max-w-3xl mx-auto">
       <Link to="/search" className="inline-flex items-center gap-1 text-sm text-gray-400 hover:text-orange-500 mb-6 transition-colors font-bold">← 返回搜索</Link>
 
-      <div className="bg-white rounded-3xl border border-gray-50 shadow-sm p-5 sm:p-8 min-w-0">
+      <div className="bg-white rounded-3xl border border-gray-50 shadow-sm overflow-hidden min-w-0">
+        {listing.cover_image && (
+          <div className="aspect-[16/9] bg-gray-50">
+            <img src={listing.cover_image} alt="" className="w-full h-full object-cover" />
+          </div>
+        )}
+        <div className="p-5 sm:p-8">
         <div className="flex flex-wrap items-center gap-2 mb-3">
           <span className="text-xs font-bold text-white bg-gradient-to-r from-orange-400 to-pink-400 px-3 py-1 rounded-full">{listing.textbook_category_name_zh}</span>
           <span className="text-xs text-gray-400 font-bold">{listing.textbook_language === 'zh' ? '📘 中文版' : '📙 English'}</span>
@@ -87,6 +93,7 @@ export default function TextbookDetail() {
             <span className="text-sm text-gray-400 bg-gray-50 px-4 py-2 rounded-full font-bold shrink-0">你的上架 👑</span>
           )}
         </div>
+      </div>
       </div>
     </div>
   );
