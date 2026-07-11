@@ -62,21 +62,22 @@ def create_app() -> FastAPI:
     def on_startup():
         Base.metadata.create_all(bind=engine)
         db = SessionLocal()
-        try:
-            db.execute(text("ALTER TABLE listings ADD COLUMN IF NOT EXISTS cover_image VARCHAR(500) DEFAULT ''"))
-            db.commit()
-        except Exception:
-            db.rollback()
+        migrations = [
+            "ALTER TABLE listings ADD COLUMN IF NOT EXISTS cover_image VARCHAR(500) DEFAULT ''",
+            "ALTER TABLE listings ADD COLUMN IF NOT EXISTS location VARCHAR(200) DEFAULT ''",
+            "ALTER TABLE users ADD COLUMN IF NOT EXISTS reset_token VARCHAR(255) DEFAULT ''",
+        ]
+        for m in migrations:
+            try:
+                db.execute(text(m))
+                db.commit()
+            except Exception:
+                db.rollback()
         if db.query(Category).count() == 0:
             for name, name_zh in SEED_CATEGORIES:
                 db.add(Category(name=name, name_zh=name_zh))
             db.commit()
         db.close()
-        try:
-            from app.seed_full import seed as seed_all
-            seed_all()
-        except Exception:
-            pass
 
     @app.get("/api/health")
     def health():
