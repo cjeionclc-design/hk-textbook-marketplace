@@ -6,7 +6,7 @@ import TextbookCard from '../components/TextbookCard';
 import { CardSkeleton } from '../components/Skeleton';
 import { CategoryIcon, ShopIcon, RefreshIcon } from '../components/Icon';
 
-const COLORS = ['#ff6b6b','#a78bfa','#4ecdc4','#ffd93d','#6bcb77','#f97316','#8b5cf6','#06b6d4'];
+const COLORS = ['#ff6b6b','#a78bfa','#4ecdc4','#f97316','#6bcb77','#06b6d4','#8b5cf6','#f59e0b'];
 
 export default function HomePage() {
   const [categories, setCategories] = useState([]);
@@ -41,8 +41,9 @@ export default function HomePage() {
         <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-9 gap-2.5">
           {categories.map((cat, i) => (
             <Link key={cat.id} to={`/search?category=${cat.id}`}
-              className="card flex flex-col items-center p-3 py-4 gap-2 group">
-              <div className="w-9 h-9 rounded-xl flex items-center justify-center transition-transform group-hover:scale-110 duration-200" style={{background:`${COLORS[i%COLORS.length]}15`,color:COLORS[i%COLORS.length]}}>
+              className="glass flex flex-col items-center p-3 py-4 gap-2 group !rounded-2xl">
+              <div className="w-9 h-9 rounded-xl flex items-center justify-center transition-transform group-hover:scale-110 duration-200"
+                style={{background:`${COLORS[i%COLORS.length]}18`, color:COLORS[i%COLORS.length]}}>
                 <CategoryIcon name={cat.name} className="w-5 h-5" />
               </div>
               <span className="text-[11px] sm:text-xs text-gray-600 text-center font-semibold">{cat.name_zh}</span>
@@ -54,7 +55,7 @@ export default function HomePage() {
       {recentListings.length > 0 && (
         <section className="mb-10">
           <div className="flex items-center gap-2 mb-4">
-            <div className="w-1.5 h-5 rounded-full" style={{background:'#ff6b6b'}} />
+            <div className="w-1 h-5 rounded-full" style={{background:'#ff6b6b'}} />
             <h2 className="text-lg font-bold text-gray-800">最近浏览</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -65,7 +66,7 @@ export default function HomePage() {
 
       <section>
         <div className="flex items-center gap-2 mb-4">
-          <div className="w-1.5 h-5 rounded-full" style={{background:'#4ecdc4'}} />
+          <div className="w-1 h-5 rounded-full" style={{background:'#4ecdc4'}} />
           <h2 className="text-lg font-bold text-gray-800">最新上架</h2>
         </div>
         {loading ? (
@@ -73,7 +74,7 @@ export default function HomePage() {
             {[1,2,3].map(i => <CardSkeleton key={i} />)}
           </div>
         ) : listings.length === 0 ? (
-          <div className="text-center py-20 card">
+          <div className="text-center py-20 glass">
             <ShopIcon className="w-16 h-16 mx-auto text-gray-200 mb-4" />
             <p className="text-gray-400 font-semibold text-lg mb-1">还没有人发布书籍</p>
             <p className="text-gray-300 text-sm mb-4">成为第一个卖家吧</p>

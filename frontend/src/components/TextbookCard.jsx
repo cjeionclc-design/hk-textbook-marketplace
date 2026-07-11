@@ -10,8 +10,7 @@ export default function TextbookCard({ listing }) {
   const accent = ACCENTS[listing.id % ACCENTS.length];
 
   return (
-    <Link to={`/listings/${listing.id}`}
-      className="card overflow-hidden group flex flex-col">
+    <Link to={`/listings/${listing.id}`} className="glass overflow-hidden group flex flex-col">
       {listing.cover_image ? (
         <div className="aspect-[4/3] bg-gray-50 overflow-hidden">
           <img src={listing.cover_image} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
@@ -34,7 +33,7 @@ export default function TextbookCard({ listing }) {
           <span className="text-xs text-gray-300 line-through">HK${listing.textbook_original_price}</span>
           {discount > 0 && <span className="text-[11px] font-bold text-white px-1.5 py-0.5 rounded-md shrink-0" style={{background:accent}}>-{discount}%</span>}
         </div>
-        <div className="flex items-center gap-2 mt-3 pt-3 border-t border-gray-50">
+        <div className="flex items-center gap-2 mt-3 pt-3 border-t border-gray-100/50">
           <div className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold text-white" style={{background:accent}}>
             {listing.seller_nickname?.[0]?.toUpperCase()}
           </div>
