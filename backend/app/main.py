@@ -83,6 +83,15 @@ def create_app() -> FastAPI:
     def health():
         return {"status": "ok"}
 
+    @app.post("/api/seed")
+    def seed_demo():
+        try:
+            from app.seed_full import seed
+            seed()
+            return {"status": "ok", "message": "Seed complete"}
+        except Exception as e:
+            return {"status": "error", "message": str(e)}
+
     return app
 
 
