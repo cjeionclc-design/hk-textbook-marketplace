@@ -72,6 +72,11 @@ def create_app() -> FastAPI:
                 db.add(Category(name=name, name_zh=name_zh))
             db.commit()
         db.close()
+        try:
+            from app.seed_full import seed as seed_all
+            seed_all()
+        except Exception:
+            pass
 
     @app.get("/api/health")
     def health():
