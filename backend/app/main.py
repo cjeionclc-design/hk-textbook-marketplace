@@ -4,6 +4,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
+from sqlalchemy import text
+
 from app.config import CORS_ORIGINS, UPLOAD_DIR
 from app.database import engine, Base, SessionLocal
 from app.models import User, Category, Textbook, Listing, Message
@@ -54,6 +56,11 @@ def create_app() -> FastAPI:
     def on_startup():
         Base.metadata.create_all(bind=engine)
         db = SessionLocal()
+        try:
+            db.execute(text("ALTER TABLE listings ADD COLUMN IF NOT EXISTS cover_image VARCHAR(500) DEFAULT ''"))
+            db.commit()
+        except Exception:
+            db.rollback()
         if db.query(Category).count() == 0:
             for name, name_zh in SEED_CATEGORIES:
                 db.add(Category(name=name, name_zh=name_zh))
